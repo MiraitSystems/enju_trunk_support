@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+# chkconfig: - 80 20
+# description: catalina-daemon
+ 
+# Source function library.
+. /etc/rc.d/init.d/functions
+ 
+#export JAVA_HOME=/usr/java/default
+export CATALINA_HOME=/opt/tomcat
+export CATALINA_OPTS="-Xms512m -Xmx768m -XX:PermSize=128m -XX:MaxPermSize=128m"
+export TOMCAT_USER=tomcat
+export CATALINA_PID=$CATALINA_HOME/logs/catalina-daemon.pid
+export CATALINA_OUT="$CATALINA_HOME/logs/catalina-daemon.out"
+export CATALINA_TMP="$CATALINA_HOME/temp"
+ 
+tomcat=$CATALINA_HOME/bin/catalina.sh
+prog=tomcat
+lockfile=${LOCKFILE-/var/lock/subsys/tomcat}
+RETVAL=0
+ 
+start() {
+    echo -n $"Starting $prog: "
+    $tomcat start
+    RETVAL=$?
+    if [ $RETVAL = 0 ]; then
+        echo_success
+        touch ${lockfile}
+    else
+        echo_failure
+    fi
+    echo
+    return $RETVAL
+}
+ 
+stop() {
+    echo -n $"Stopping $prog: "
+    $tomcat stop
+    RETVAL=$?
+    if [ $RETVAL = 0 ]; then
+        echo_success
+        rm -f ${lockfile} ${CATALINA_PID}
+    else
+        echo_failure
+    fi
+    echo
+    return $RETVAL
+}
+ 
+version() {
+   $tomcat version
+    RETVAL=$?
+    return $RETVAL
+}
+ 
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    condrestart)
+        if [ -f ${CATALINA_PID} ] ; then
+            stop
+            start
+        fi
+        ;;
+    status)
+        status -p ${CATALINA_PID} $prog
+        RETVAL=$?
+        ;;
+    version)
+        version
+        ;;
+    *)
+        echo $"Usage: $prog {start|stop|restart|condrestart|status|version}"
+        exit 1
+esac
+ 
+exit $RETVAL
