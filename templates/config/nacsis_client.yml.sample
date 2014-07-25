@@ -1,0 +1,26 @@
+ development:
+   gw_account:
+     cat_user_id: 'Your CAT GATEWAY User ID'
+     cat_password: 'Your CAT GATEWAY Password'
+     ill_user_id: 'Your ILL GATEWAY User ID'
+     ill_password: 'Your ILL GATEWAY Password'
+     gw_url: 'http://192.168.26.160:3001/'
+     ssl_verify: 'false'
+
+ test:
+   gw_account:
+     cat_user_id: 'Your CAT GATEWAY User ID'
+     cat_password: 'Your CAT GATEWAY Password'
+     ill_user_id: 'Your ILL GATEWAY User ID'
+     ill_password: 'Your ILL GATEWAY Password'
+     gw_url: 'http://192.168.26.160:3001/'
+     ssl_verify: 'false'
+
+ production:
+   gw_account:
+     cat_user_id: 'Your CAT GATEWAY User ID'
+     cat_password: 'Your CAT GATEWAY Password'
+     ill_user_id: 'Your ILL GATEWAY User ID'
+     ill_password: 'Your ILL GATEWAY Password'
+     gw_url: 'http://192.168.26.160:3001/'
+     ssl_verify: 'false'
