@@ -11,9 +11,9 @@ SOLR_NAME="apache-solr-${SOLR_VERSION}"
 SOLR_ARC_NAME="${SOLR_NAME}.tgz"
 export JAVA_HOME=/usr/lib/jvm/java-openjdk
 
-# 必要なアーカイブ群がすでに存在するかどうかチェック
-if ! [ -f /usr/local/src/enju_trunk_support.zip ]; then
-  echo "enju_trunk_support.zip does not exist."
+echo "step B-1: check prerequisites"
+if ! [ -f ${JAVA_HOME} ]; then
+  echo "java does not exist."
   exit 1
 fi
 if ! [  -f /usr/local/src/${TOMCAT_ARC_NAME} ]; then
@@ -25,9 +25,6 @@ if ! [ -f /usr/local/src/${SOLR_ARC_NAME} ]; then
   exit 1
 fi
 
-echo "step B-1: prepare setting"
-cd /usr/local/src
-unzip -o enju_trunk_support.zip
 
 echo "step B-2: install tomcat7"
 cd /opt
@@ -79,5 +76,12 @@ cp /usr/local/src/enju_trunk_support-jst/tools/service/tomcat-conf/unix/solr.xml
 \cp /usr/local/src/enju_trunk_support-jst/templates/solr/conf/* /opt/solr/example/solr/conf/
  
 service tomcat7 start
+
+wget --spider -nv http://localhost:8983/ 2>&1 | grep '200 OK'
+result=$?
+if [ ${result} -ne 0]; then
+  echo "tomcat top page is down."
+  exit 1
+fi  
  
 echo "setup tomcat and solr: end."
