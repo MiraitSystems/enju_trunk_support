@@ -12,7 +12,7 @@ SOLR_ARC_NAME="${SOLR_NAME}.tgz"
 export JAVA_HOME=/usr/lib/jvm/java-openjdk
 
 echo "step B-1: check prerequisites"
-if ! [ -f ${JAVA_HOME} ]; then
+if ! [ -e ${JAVA_HOME} ]; then
   echo "java does not exist."
   exit 1
 fi
@@ -79,7 +79,7 @@ service tomcat7 start
 
 wget --spider -nv http://localhost:8983/ 2>&1 | grep '200 OK'
 result=$?
-if [ ${result} -ne 0]; then
+if [ ${result} -ne 0 ]; then
   echo "tomcat top page is down."
   exit 1
 fi  
